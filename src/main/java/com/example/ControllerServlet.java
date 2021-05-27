@@ -16,7 +16,7 @@ public class ControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         ServletContext servletContext = getServletContext(); // с помощью метода getServletContext() получаем объект ServletContext, который представляет суть запроса.
-        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/com.example.AreaCheckServlet"); // с помощью метода(getRequestDispatcher), объекта servletContext перенаправляем запрос(адресс указываем в параметр метода getRequestDispatcher)
+        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/AreaCheckServlet"); // с помощью метода(getRequestDispatcher), объекта servletContext перенаправляем запрос(адресс указываем в параметр метода getRequestDispatcher)
         requestDispatcher.forward(request,response);// у объекта requestDispatcher вызываем метод forward(перенаправляет запрос на другой ресурс)
 
     }

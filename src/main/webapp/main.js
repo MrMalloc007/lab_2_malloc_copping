@@ -11,6 +11,18 @@ $(function (){
             };
         }
 
+    function drawPoint(x, y, r, result) {
+        ctx.beginPath();
+        if (result == "Есть пробитие") {
+            ctx.fillStyle = "rgba(0, 255, 0, 1)";
+        }else {
+            ctx.fillStyle = "rgba(255, 0, 0, 1)";
+        }
+        ctx.arc(254 + 175 * x * 10 / (r*10), 254 - 175 * y*10 / (r*10), 3, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.fill();
+    }
+
         canvas.onmousedown = function (e) {
             let s = 0;
             let radR = document.getElementById("R");
@@ -29,9 +41,12 @@ $(function (){
                 s = 3.9;
             }
 
+
             let corArr = windowToCanvas(canvas, e.clientX, e.clientY);
             let x_real = s * ((corArr.x - 254)/175);
             let y_real = (-1) * s * ((corArr.y - 254)/175);
+
+            drawPoint(x_real,y_real,radR.value,"Есть пробитие");
 
             // let out = document.getElementById("X");
             // out.value = x_real.toFixed(3);
@@ -39,8 +54,8 @@ $(function (){
             out = document.getElementById("cordY");
             out.value = y_real.toFixed(3);
             /* пока что коменчу что бы отладить правильный тык */
-            // out = document.getElementById("form:but");
-            // out.click();
+            out = document.getElementById("submint");
+            out.click();
         }
 
         function draw(){
@@ -171,12 +186,6 @@ $(function (){
 
 
 
-
-
-
         }
-
-
-
     }
 );

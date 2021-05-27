@@ -8,48 +8,58 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AreaCheckServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String x = request.getParameter("coor_X").replace(",","."); // вызываем метод getParametr у объекта request,в параметре метода имя инпута
+       String x = request.getParameter("coor_X").replace(",","."); // вызываем метод getParametr у объекта request,в параметре метода имя инпута
         String y = request.getParameter("coordinata_Y").replace(",",".");
         String r = request.getParameter("coor_R").replace(",",".");
-        long time = System.nanoTime();
+
 
 
         String valid = main_validate(x,y,r);
-        if (valid.equals("Кайф")){
+        if (valid.equals("Кайф")) {
+
 
             double new_x = Double.parseDouble(x);// парсим значения в дабл
             double new_y = Double.parseDouble(y);
             double new_r = Double.parseDouble(r);
 
-            String result = check_oblast(new_x,new_y,new_r);
 
-            Tochks tochks = new Tochks(new_x,new_y,new_r,String.valueOf((System.nanoTime() - time) / 1000) + " mcs", String.valueOf(LocalTime.now()),result);
+            long time = System.nanoTime();
+            String result = check_oblast(new_x, new_y, new_r);
 
-            Tochka_list tochka_list = (Tochka_list) request.getServletContext().getAttribute("tochka_list");
-
-            if (tochka_list == null){
-                tochka_list = new Tochka_list();
-            }
-            tochka_list.getInformationList().add(tochks);
-
+            ArrayList historyList;
             ServletContext context = getServletContext();
-            context.setAttribute("serverInfo", valid);
-            request.setAttribute("tochka_list",tochka_list);
-            context.getRequestDispatcher("/index.jsp").forward(request,response);
+
+            Tochks model = new Tochks(new_x, new_y, new_r, String.valueOf((System.nanoTime() - time) / 1000) + " mcs", String.valueOf(LocalTime.now()), result);
+
+            if (context.getAttribute("tochka_list") == null) {
+                historyList = new ArrayList();
+            } else {
+                historyList = (ArrayList) context.getAttribute("tochka_list");
+            }
+
+            historyList.add(model);
+
+            context.setAttribute("tochka_list", historyList);
+            request.setAttribute("tochka_list", historyList);
+            context.getRequestDispatcher("/index.jsp").forward(request, response);
+            System.out.println(new_x);
 
 
-        }else{
+      } else {
 
-            request.getSession().setAttribute("serverInfo", valid);
+           request.getSession().setAttribute("serverInfo", valid);
             getServletContext().getRequestDispatcher("/index.jsp").forward(request,response);
 
         }
+
+
     }
 
     public String main_validate(String x, String y, String r){

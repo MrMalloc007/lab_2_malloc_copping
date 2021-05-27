@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:useBean id="tochka_list" class="com.example.Tochka_list" scope="session" />
 <%@ page import="java.util.stream.Stream" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
@@ -75,7 +74,7 @@
             <p id="infoinfo"></p>
         </div>
         <div class="table">
-            <table class="table1table">
+            <table class="table1table" id="table_data">
                 <tr>
                     <th>X</th>
                     <th>Y</th>
@@ -84,7 +83,7 @@
                     <th>scripttime</th>
                     <th>Result</th>
                 </tr>
-                <c:forEach var="tochks" items="${tochka_list.informationList}">
+                <c:forEach var="tochks" items="${requestScope.tochka_list}">
                     <tr>
                         <td>${tochks.coordinate_x}</td>
                         <td>${tochks.coordinate_y}</td>

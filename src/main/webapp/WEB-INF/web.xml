@@ -8,6 +8,7 @@
         <servlet-name>ControllerServlet</servlet-name>
         <servlet-class>com.example.ControllerServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>ControllerServlet</servlet-name>
         <url-pattern>/ControllerServlet</url-pattern>
