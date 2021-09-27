@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,28 +14,29 @@ public class AreaCheckServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-       String x = request.getParameter("coor_X").replace(",","."); // вызываем метод getParametr у объекта request,в параметре метода имя инпута
+        String x = request.getParameter("coor_X").replace(",","."); // вызываем метод getParametr у объекта request,в параметре метода имя инпута
         String y = request.getParameter("coordinata_Y").replace(",",".");
         String r = request.getParameter("coor_R").replace(",",".");
 
 
 
         String valid = main_validate(x,y,r);
-        if (valid.equals("Кайф")) {
 
+        if (valid.equals("okey")) {
 
             double new_x = Double.parseDouble(x);// парсим значения в дабл
             double new_y = Double.parseDouble(y);
             double new_r = Double.parseDouble(r);
 
-
             long time = System.nanoTime();
+
             String result = check_oblast(new_x, new_y, new_r);
 
-            ArrayList historyList;
             ServletContext context = getServletContext();
 
-            Tochks model = new Tochks(new_x, new_y, new_r, String.valueOf((System.nanoTime() - time) / 1000) + " mcs", String.valueOf(LocalTime.now()), result);
+            ArrayList historyList;
+
+            Tochks vistrel = new Tochks(new_x, new_y, new_r, String.valueOf((System.nanoTime() - time) / 1000) + " mcs", String.valueOf(LocalTime.now()), result);
 
             if (context.getAttribute("tochka_list") == null) {
                 historyList = new ArrayList();
@@ -44,23 +44,18 @@ public class AreaCheckServlet extends HttpServlet {
                 historyList = (ArrayList) context.getAttribute("tochka_list");
             }
 
-            historyList.add(model);
+            historyList.add(vistrel);
 
             context.setAttribute("tochka_list", historyList);
             request.setAttribute("tochka_list", historyList);
             context.getRequestDispatcher("/index.jsp").forward(request, response);
-            System.out.println(new_x);
-
 
       } else {
-
            request.getSession().setAttribute("serverInfo", valid);
             getServletContext().getRequestDispatcher("/index.jsp").forward(request,response);
-
         }
-
-
     }
+
 
     public String main_validate(String x, String y, String r){
         if (!validate_for_X(x)){
@@ -70,7 +65,7 @@ public class AreaCheckServlet extends HttpServlet {
         }else if (!validate_for_R(r)){
             return "Вы ввели некорректное значение";
         }else {
-            return "Кайф";
+            return "okey";
         }
     }
 
@@ -110,9 +105,9 @@ public class AreaCheckServlet extends HttpServlet {
 
     public String second_oblast(double x, double y, double r){// чек попадания во второй области
         if (x <= 0 && y >= 0 && y <= x + (r/2)) {
-            return "Есть пробитие";
+            return "Балдеж";
         }else{
-            return "Нету пробития";
+            return "Не балдеж";
         }
     }
 

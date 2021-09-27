@@ -1,7 +1,6 @@
 .main{
     max-width: 1500px;
     height: 770px;
-    border: 5px solid black ;
     position: relative;
 }
 
@@ -24,7 +23,6 @@
     top: 5%;
     left: 5%;
     border: 1px solid black ;
-    border-radius: 50% 0 50% 0;
     background: whitesmoke;
     text-align: center;
 }
@@ -36,7 +34,6 @@
     top: 5%;
     left: 70%;
     border: 1px solid black ;
-    border-radius: 0 50% 0 50%;
     background: whitesmoke;
     text-align: center;
 }
@@ -120,6 +117,7 @@ td{
     background: lightgray;
     border-radius: 10px;
 }
+
 .table{
     max-width: 77%;
     position: absolute;
@@ -144,4 +142,10 @@ td{
     position: absolute;
     top: 32%;
     left: 460px;
+}
+.checkboxV:hover {
+    background: red;
+}
+.XXX {
+    height: 40%;
 }

@@ -1,7 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="java.util.stream.Stream" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %> <!--(Как можно догадаться из названия, данная директива предоставляет атрибуты для JSP страницы.) Данный атрибут задаёт тип MIME для вывода и по желанию можно задать кодировку знаков в ответе (HTML ответе). По умолчанию в качестве значения MIME используется text/html. Для наглядности можем использовать следующий пример: -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- подключаем функционал библиотек jstl -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +19,7 @@
     </div>
 
     <div class="image">
-        <canvas class="canvas" width="500" height="500" id="canvas">
+        <canvas class="canvas" width="500" height="500" id="canvas" onmousedown = "  ">
         </canvas>
     </div>
 
@@ -31,35 +30,35 @@
             </div>
 
             <div class="inputinpvalue">
-                <div class="XXX">
-                    <p>X</p>
-                    <input type="checkbox" name="coordinate_X" value="-4" onclick=" X.value = -4 "  >-4
-                    <input type="checkbox" name="coordinate_X" value="-3" onclick=" X.value = -3 ">-3
-                    <input type="checkbox" name="coordinate_X" value="-2" onclick=" X.value = -2 ">-2
-                    <input type="checkbox" name="coordinate_X" value="-1" onclick=" X.value = -1 ">-1
-                    <input type="checkbox" name="coordinate_X" value="0" onclick=" X.value = 0 ">0
-                    <input type="checkbox" name="coordinate_X" value="1" onclick=" X.value = 1 ">1
-                    <input type="checkbox" name="coordinate_X" value="2" onclick=" X.value = 2 ">2
-                    <input type="checkbox" name="coordinate_X" value="3" onclick=" X.value = 3 ">3
-                    <input type="checkbox" name="coordinate_X" value="4" onclick=" X.value = 4 ">4
 
+                    <p>X</p>
+                <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="-4" onclick=" X.value = -4 "  >-4</span>
+                <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="-3" onclick=" X.value = -3 ">-3</span>
+                <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="-2" onclick=" X.value = -2 ">-2</span>
+                <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="-1" onclick=" X.value = -1 ">-1</span>
+                <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="0" onclick=" X.value = 0 ">0</span>
+                <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="1" onclick=" X.value = 1 ">1</span>
+                <span class = "checkboxV"> <input type="checkbox" name="coordinate_X" value="2" onclick=" X.value = 2 ">2</span>
+                <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="3" onclick=" X.value = 3 ">3</span>
+                <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="4" onclick=" X.value = 4 ">4</span>
                     <input type="hidden" id="X" name="coor_X">
-                </div>
+
                 <div class="tablevalue">
+                    <div>
                     <p>Y</p>
                     <p>Введите число от -5 до 3</p>
-                    <input class="inputtable" id="cordY" tabindex="1" name="coordinata_Y" type="text" >
+                    <input class="inputtable" id="cordY" tabindex="1" name="coordinata_Y" type="text" ></div>
                 </div>
 
                 <div class="tablevalue" >
                     <p>R</p>
-                    <input class="inputbutton" id="mybutton_1" type="button" name="coordinata_R" value="1" onclick=" R.value = 1 "> 1
-                    <input class="inputbutton" id="mybutton_2" type="button" name="coordinata_R" value="2" onclick=" R.value = 2 "> 2
-                    <input class="inputbutton" id="mybutton_3" type="button" name="coordinata_R" value="3" onclick=" R.value = 3 "> 3
-                    <input class="inputbutton" id="mybutton_4" type="button" name="coordinata_R" value="4" onclick=" R.value = 4 "> 4
-                    <input class="inputbutton" id="mybutton_5" type="button" name="coordinata_R" value="5" onclick=" R.value = 5 "> 5
+                    <input class="inputbutton" id="mybutton_1" type="button" name="coordinata_R" value="1" onclick=" R.value = 1 ">
+                    <input class="inputbutton" id="mybutton_2" type="button" name="coordinata_R" value="2" onclick=" R.value = 2 ">
+                    <input class="inputbutton" id="mybutton_3" type="button" name="coordinata_R" value="3" onclick=" R.value = 3 ">
+                    <input class="inputbutton" id="mybutton_4" type="button" name="coordinata_R" value="4" onclick=" R.value = 4 ">
+                    <input class="inputbutton" id="mybutton_5" type="button" name="coordinata_R" value="5" onclick=" R.value = 5 ">
 
-                    <input type="hidden" id="R" name="coor_R">
+                    <input type="hidden" id="R" name="coor_R" value = "0">
                 </div>
                 <div class="buttonsent"><button id="submint" type="submit">Отправить</button></div>
                 <div class="buttonresent"><button id="resent" type="reset">Сбросить</button></div>
@@ -69,9 +68,6 @@
     <div class="outputvalue">
         <div class="zagolovok2">
             <p>OUTPUTVALUE</p>
-        </div>
-        <div class="info">INFORMATION
-            <p id="infoinfo"></p>
         </div>
         <div class="table">
             <table class="table1table" id="table_data">
@@ -83,6 +79,8 @@
                     <th>scripttime</th>
                     <th>Result</th>
                 </tr>
+                <script src="https://code.jquery.com/jquery-3.5.1.min.js" type=""></script>
+                <script src="main.js"></script>
                 <c:forEach var="tochks" items="${requestScope.tochka_list}">
                     <tr>
                         <td>${tochks.coordinate_x}</td>
@@ -97,7 +95,6 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" type=""></script>
-<script src="main.js"></script>
+
 </body>
 </html>

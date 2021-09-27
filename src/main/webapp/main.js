@@ -2,7 +2,7 @@ $(function (){
         canvas = document.getElementById("canvas"); // строка сценария извлекает узел в модели DOM, представляющий <canvas>элемент, путем вызова document.getElementById()метода
         var ctx = canvas.getContext("2d"); // Когда у нас есть узел элемента, вы можете получить доступ к контексту рисования, используя его getContext()метод.
         var r = 2;
-        draw();
+        setInterval( draw ,20);
 
         function windowToCanvas(canvas, x, y) {
             let bbox = canvas.getBoundingClientRect();
@@ -11,55 +11,76 @@ $(function (){
             };
         }
 
-    function drawPoint(x, y, r, result) {
-        ctx.beginPath();
-        if (result == "Есть пробитие") {
-            ctx.fillStyle = "rgba(0, 255, 0, 1)";
-        }else {
-            ctx.fillStyle = "rgba(255, 0, 0, 1)";
+        function drawPoint(x, y, r, result) {
+            ctx.beginPath();
+            r=1;
+            if (result == "Балдеж") {
+                ctx.fillStyle = "rgba(0, 255, 0, 1)";
+            }else {
+                ctx.fillStyle = "rgba(255, 0, 0, 1)";
+            }
+            ctx.arc(250 + 2*x*20, 250 - 2*y*20, 3, 0, 2 * Math.PI);
+            ctx.closePath();
+            ctx.fill();
+
         }
-        ctx.arc(254 + 175 * x * 10 / (r*10), 254 - 175 * y*10 / (r*10), 3, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
-    }
+
+        function checkTableAndDraw(){
+            let cells = Array.prototype.slice.call(document.getElementById("table_data").getElementsByTagName("td"));
+            let n = cells.length;
+            if(Number(cells[2].innerHTML) !== 0){
+                for(let i = 0; i < n; i = i + 6){
+                    drawPoint(Number(cells[i].innerHTML), Number(cells[i + 1].innerHTML), Number(cells[i + 2]).innerHTML, "Есть пробитие");
+                }
+            }
+        }
 
         canvas.onmousedown = function (e) {
             let s = 0;
             let radR = document.getElementById("R");
-            if (radR == null) {
+            if ((radR.value !=1)&&(radR.value !=2)&&(radR.value !=3)&&(radR.value !=4)&&(radR.value !=5)) {
                 alert("Вы не выбрали R!");
+                return 0;
             }else if(radR.value == 1) {
-                s = 0.8;
+                s = 1;
             }
             else if (radR.value == 2) {
-                s = 1.5;
+                s = 2;
             }else if(radR.value == 3) {
-                s = 2.3;
+                s = 3;
             }else if(radR.value == 4) {
-                s = 3.1;
+                s = 4;
             }else if (radR.value == 5) {
-                s = 3.9;
+                s = 5;
             }
 
 
             let corArr = windowToCanvas(canvas, e.clientX, e.clientY);
-            let x_real = s * ((corArr.x - 254)/175);
-            let y_real = (-1) * s * ((corArr.y - 254)/175);
+            let x_real =  ((corArr.x - 250)/175);
+            let y_real = (-1) *((corArr.y - 250)/175);
 
-            drawPoint(x_real,y_real,radR.value,"Есть пробитие");
+            //drawPoint(x_real,y_real,radR.value,"Есть пробитие");
 
-            // let out = document.getElementById("X");
-            // out.value = x_real.toFixed(3);
+            let out = document.getElementById("X");
+            out.value = parseInt(x_real*s);
 
             out = document.getElementById("cordY");
-            out.value = y_real.toFixed(3);
+            out.value = (y_real*s).toFixed(3);
+
             /* пока что коменчу что бы отладить правильный тык */
             out = document.getElementById("submint");
             out.click();
         }
 
         function draw(){
+
+            let R = parseInt(document.getElementById("R").value);
+            let step = 20;
+
+            ctx.clearRect(0,0, 500, 500);
             ctx.beginPath();
+
+            ctx.fillStyle = "rgba(255, 0, 0, 1)";
 
             ctx.moveTo(250,490);
             ctx.lineTo(250,10);
@@ -84,7 +105,7 @@ $(function (){
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("X", 247, 8);
+            ctx.fillText("Y", 245, 10);
 
             ctx.moveTo(490,250);
             ctx.lineTo(483,257);
@@ -97,95 +118,88 @@ $(function (){
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("Y", 492, 252);
+            ctx.fillText("X", 490, 255);
 
-            ctx.moveTo(360,253);
-            ctx.lineTo(360,247);
+            ctx.moveTo(250+step*5,255);
+            ctx.lineTo(250+step*5,245);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("R/2", 353, 262);
+            ctx.fillText("2.5", 250 + step*5, 265);
 
-            ctx.moveTo(470,253);
-            ctx.lineTo(470,247);
+            ctx.moveTo(250+2*step*5,253);
+            ctx.lineTo(250+2*step*5,247);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("R", 467, 262);
+            ctx.fillText("5", 467, 262);
 
-            ctx.moveTo(140,253);
-            ctx.lineTo(140,247);
+            ctx.moveTo(250-step*5,253);
+            ctx.lineTo(250-step*5,247);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("-R/2", 135, 262);
+            ctx.fillText("-2.5", 135, 262);
 
-            ctx.moveTo(30,253);
-            ctx.lineTo(30,247);
+            ctx.moveTo(250-2*step*5,253);
+            ctx.lineTo(250-2*step*5,247);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("-R", 30, 262);
+            ctx.fillText("-5", 30, 262);
 
-            ctx.moveTo(253,360);
-            ctx.lineTo(247,360);
+            ctx.moveTo(253,250 + step*5);
+            ctx.lineTo(247,250 + step*5);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("-R/2", 262, 363);
+            ctx.fillText("-2.5", 262, 363);
 
-            ctx.moveTo(253,470);
-            ctx.lineTo(247,470);
+            ctx.moveTo(253,250 + 2*step*5);
+            ctx.lineTo(247,250 + 2*step*5);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("-R", 262, 473);
+            ctx.fillText("-5", 262, 473);
 
-            ctx.moveTo(253,140);
-            ctx.lineTo(247,140);
+            ctx.moveTo(253,250 - step*5);
+            ctx.lineTo(247,250 - step*5);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("R/2", 262, 144);
+            ctx.fillText("2.5", 262, 144);
 
-            ctx.moveTo(253,30);
-            ctx.lineTo(247,30);
+            ctx.moveTo(253,250 - step*5);
+            ctx.lineTo(247,250 - step*5);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
-            ctx.fillText("R", 262, 34);
+            ctx.fillText("5", 262, 34);
 
-            ctx.moveTo(250,140);
-            ctx.lineTo(140,250);
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            ctx.moveTo(30,250);
-            ctx.lineTo(30,360);
+            ctx.moveTo(250,250 - step*R);
+            ctx.lineTo(250 - step*R,250);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            ctx.moveTo(30,360);
-            ctx.lineTo(250,360);
+            ctx.moveTo(250-2*step*R,250);
+            ctx.lineTo(250-2*step*R,250 + step*R);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            ctx.moveTo(30,360);
-            ctx.lineTo(250,360);
+            ctx.moveTo(250-2*step*R,250 + step*R);
+            ctx.lineTo(250,250 + step*R);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            ctx.arc(250, 250, 110 * 2, -Math.PI / 2, 0, false);
+            ctx.arc(250, 250, 2*step * R, -Math.PI / 2, 0, false);
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.stroke();
 
-
-
+            checkTableAndDraw();
         }
     }
 );
