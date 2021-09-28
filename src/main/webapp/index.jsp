@@ -19,8 +19,27 @@
     </div>
 
     <div class="image">
-        <canvas class="canvas" width="500" height="500" id="canvas" onmousedown = "  ">
+        <canvas class="canvas" width="500" height="500" id="canvas"
+                onmousemove = "MouseXY.value = event.clientX+':'+event.clientY "
+                onclick = " let Ypass = false;
+                            let Xpass = false;
+                            if ((parseInt((event.clientX - 720)/40) <= 4) && (parseInt((event.clientX - 720)/40) >= -4)){
+                                X.value = parseInt((event.clientX - 720)/40);
+                                Xpass = true;
+                            } else alert('X вышел за пределы допустимых значений');
+                            if (((505 - event.clientY )/40 >= -5) && ((505 - event.clientY )/40 <= 3)){
+                                cordY.value = (505 - event.clientY )/40;
+                                Ypass = true;
+                            } else alert('Y вышел за пределы допустимых значений');
+
+                            if (Xpass && Ypass){
+                            if (R.value>0){
+                                submint.click();
+                            }
+                            else alert('Вы не выбрали R');
+                                }">
         </canvas>
+
     </div>
 
     <div class="inputvalue">
@@ -41,7 +60,7 @@
                 <span class = "checkboxV"> <input type="checkbox" name="coordinate_X" value="2" onclick=" X.value = 2 ">2</span>
                 <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="3" onclick=" X.value = 3 ">3</span>
                 <span class = "checkboxV"><input type="checkbox" name="coordinate_X" value="4" onclick=" X.value = 4 ">4</span>
-                    <input type="hidden" id="X" name="coor_X">
+                    <input type="text" id="X" name="coor_X">
 
                 <div class="tablevalue">
                     <div>
@@ -63,6 +82,7 @@
                 <div class="buttonsent"><button id="submint" type="submit">Отправить</button></div>
                 <div class="buttonresent"><button id="resent" type="reset">Сбросить</button></div>
             </div>
+            <p>X:Y ==<input id="MouseXY" name = "MouseXY" type="text"></p>
         </form>
     </div>
     <div class="outputvalue">
