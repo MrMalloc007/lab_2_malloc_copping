@@ -71,10 +71,9 @@ public class AreaCheckServlet extends HttpServlet {
 
     public boolean validate_for_X(String x){ // валидация для x
         try {
-            Double[] array_of_x_value = {-4.0, -3.0, -2.0, -1.0, 0d, 1.0, 2.0, 3.0, 4.0}; // массив для сравнения
-            double xARR = Double.parseDouble(x); // парсим в добл
-            return Arrays.asList(array_of_x_value).contains(xARR);// asList фигачит листок(объект java.util.Arrays) из массива, а contains вернет true, если список содержит нужный элемент
-        }catch (NumberFormatException e){ // ошибка парса(например если будет null)
+            double doub_x = Double.parseDouble(x);
+            return (doub_x >= -4) && (doub_x <= 4);
+        }catch (NumberFormatException e){
             return false;
         }
     }
